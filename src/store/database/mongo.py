@@ -35,4 +35,8 @@ class MongoDb:
             return
         collection = self.database['stop_and_search']
         upserts = [self.__get_upsert(item) for item in items]
-        collection.bulk_write(upserts)
+        try:
+            collection.bulk_write(upserts)
+        except Error as error:
+            print(f'MongoDB error: {error}')
+            exit(255)
