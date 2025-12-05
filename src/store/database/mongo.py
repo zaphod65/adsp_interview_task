@@ -32,6 +32,8 @@ class MongoDb:
 
 
     def upsert_many(self, items: list[dict]):
+        if not items:
+            return
         collection = self.database['stop_and_search']
         upserts = [self.__get_upsert(item) for item in items]
         collection.bulk_write(upserts)
