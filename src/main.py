@@ -47,6 +47,8 @@ if __name__ == '__main__':
     for force in forces:
         print(f'Getting records for force: {force}')
         if args.date is None:
+        # On some testing it seems that data is not available for this or last
+        # month, API returns 502
             two_months_ago = date.today() + relativedelta(months=-2)
             search_date = two_months_ago.strftime('%Y-%m')
         else:

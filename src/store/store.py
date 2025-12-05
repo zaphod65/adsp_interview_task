@@ -1,5 +1,4 @@
 from .database import MongoDb
-from dotenv import load_dotenv
 
 
 class Store:

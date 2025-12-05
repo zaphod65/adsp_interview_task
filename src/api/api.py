@@ -1,5 +1,6 @@
 import json
 import requests
+from urllib3.exceptions import HTTPError
 
 
 class ApiClient:
