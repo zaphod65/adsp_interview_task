@@ -5,8 +5,6 @@ WORKDIR /code
 RUN apk add --no-cache gcc musl-dev linux-headers
 RUN pip install -r requirements.txt
 RUN cp .env.example .env
-# Run the cron every minute
-# TODO: update this to once a day for submission
-RUN echo '*  *  *  *  *    python /code/main.py' > /etc/crontabs/root
-EXPOSE 5000
+# Set up cron to run once a day at 4:00 AM
+RUN echo '0 4 * * *    python /code/main.py' > /etc/crontabs/root
 CMD crond -f
