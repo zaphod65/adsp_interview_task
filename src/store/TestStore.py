@@ -12,7 +12,3 @@ class TestStore(unittest.TestCase):
         self.store.mass_upsert(test_data)
 
         self.mock_database.upsert_many.assert_called_with(test_data)
-
-
-if __name__ == '__main__':
-    unittest.main()
