@@ -54,7 +54,11 @@ if __name__ == '__main__':
         else:
             search_date = args.date
 
-        stop_and_search_records = ApiClient.request_searches(force, search_date)
+        try:
+            stop_and_search_records = ApiClient.request_searches(force, search_date)
+        except Exception:
+            # Assume logging happened at the site of the error
+            exit(255)
 
         # Append force name to record so we can use this in database
         for record in stop_and_search_records:
@@ -64,4 +68,7 @@ if __name__ == '__main__':
             print(stop_and_search_records.pop())
             exit(0)
 
-        store.mass_upsert(stop_and_search_records)
+        try:
+            store.mass_upsert(stop_and_search_records)
+        except Exception:
+            exit(255)

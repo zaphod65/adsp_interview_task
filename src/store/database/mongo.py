@@ -39,4 +39,4 @@ class MongoDb:
             collection.bulk_write(upserts)
         except Error as error:
             print(f'MongoDB error: {error}')
-            exit(255)
+            raise error

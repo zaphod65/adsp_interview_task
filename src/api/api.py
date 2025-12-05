@@ -19,9 +19,9 @@ class ApiClient:
             response.raise_for_status()
         except HTTPError as http_error:
             print(f'HTTP error: {http_error}')
-            exit(255)
+            raise http_error
         except Exception as error:
             print(f'Non-http error: {error}')
-            exit(255)
+            raise error
 
         return json.loads(response.text)

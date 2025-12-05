@@ -1,6 +1,5 @@
 from store import Store
 import unittest
-from unittest.mock import patch
 
 class TestStore(unittest.TestCase):
     def setUp(self):
