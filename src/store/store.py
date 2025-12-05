@@ -1,4 +1,4 @@
-from .database import MongoDb
+from .database.mongo import MongoDb
 
 
 class Store:
