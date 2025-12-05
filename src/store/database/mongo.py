@@ -27,11 +27,11 @@ class MongoDb:
         return database
 
 
-    def __get_upsert(item: dict):
+    def __get_upsert(self, item: dict):
         return pymongo.UpdateOne(item, {'$set': item}, upsert=True)
 
 
     def upsert_many(self, items: list[dict]):
-        collection = database['stop_and_search']
+        collection = self.database['stop_and_search']
         upserts = [self.__get_upsert(item) for item in items]
         collection.bulk_write(upserts)
