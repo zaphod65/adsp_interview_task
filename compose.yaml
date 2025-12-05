@@ -3,6 +3,5 @@ services:
     build: .
     ports:
       - "8000:5000"
-# TODO: actually decide what database to use
-  redis:
-    image: "redis:alpine"
+  mongodb:
+    image: "mongo:8.2.2-noble"

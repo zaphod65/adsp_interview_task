@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 FROM python:3.10-alpine
-ADD src /code
+COPY src /code
 WORKDIR /code
 RUN apk add --no-cache gcc musl-dev linux-headers
 RUN pip install -r requirements.txt
