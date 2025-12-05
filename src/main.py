@@ -6,7 +6,7 @@ import os
 from store import Store
 from api import ApiClient
 
-def get_forces_from_env() -> list[str]:
+def __get_forces_from_env() -> list[str]:
     return os.environ['FORCES'].split(',')
 
 
@@ -33,29 +33,24 @@ def parse_args():
 
     return parser.parse_args()
 
-
-if __name__ == '__main__':
-    load_dotenv()
-    args = parse_args()
-
-    store = Store()
-    if args.force is not None:
-        forces = [args.force]
+def main(args, store, apiClient):
+    if args.get('force') is not None:
+        forces = [args.get('force')]
     else:
-        forces = get_forces_from_env()
+        forces = __get_forces_from_env()
 
     for force in forces:
         print(f'Getting records for force: {force}')
-        if args.date is None:
+        if args.get('date') is None:
         # On some testing it seems that data is not available for this or last
         # month, API returns 502
             two_months_ago = date.today() + relativedelta(months=-2)
             search_date = two_months_ago.strftime('%Y-%m')
         else:
-            search_date = args.date
+            search_date = args.get('date')
 
         try:
-            stop_and_search_records = ApiClient.request_searches(force, search_date)
+            stop_and_search_records = apiClient.request_searches(force, search_date)
         except Exception:
             # Assume logging happened at the site of the error
             exit(255)
@@ -64,11 +59,21 @@ if __name__ == '__main__':
         for record in stop_and_search_records:
             record['force'] = force
 
-        if args.no_store:
-            print(stop_and_search_records.pop())
+        if args.get('no_store'):
+            try:
+                print(stop_and_search_records.pop())
+            except:
+                print('No records returned')
             exit(0)
 
         try:
             store.mass_upsert(stop_and_search_records)
         except Exception:
+            # Assume logging happened at the site of the error
             exit(255)
+
+
+if __name__ == '__main__':
+    load_dotenv()
+    args = parse_args()
+    main(vars(args), Store(), ApiClient)
